@@ -1,3 +1,4 @@
 export class Product {
-  id: number;
+  productId: number;
+  productName: string;
 }
