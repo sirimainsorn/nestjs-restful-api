@@ -2,10 +2,13 @@ import {
   Controller,
   DefaultValuePipe,
   Get,
+  Param,
   ParseIntPipe,
   Query,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('product')
 @Controller('product')
 export class ProductController {
   @Get()
@@ -16,6 +19,13 @@ export class ProductController {
     return {
       pageNo: pageNo,
       pageRows: pageRows,
+    };
+  }
+
+  @Get('/:id')
+  getProductById(@Param('id') id: string): object {
+    return {
+      id: id,
     };
   }
 }
