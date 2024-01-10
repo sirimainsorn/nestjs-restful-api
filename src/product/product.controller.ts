@@ -7,12 +7,15 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateProductDto } from 'src/dto/CreateProductDto';
+import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
 
 @ApiTags('product')
 @Controller('product')
+@UseInterceptors(TransformInterceptor)
 export class ProductController {
   @Get()
   async getProductAll(
