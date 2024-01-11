@@ -6,14 +6,18 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
 
 @ApiTags('users')
 @Controller('users')
+@UseInterceptors(TransformInterceptor)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -23,8 +27,11 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  findAll(
+    @Query('pageNo') pageNo: number,
+    @Query('pageRows') pageRows: number,
+  ) {
+    return this.usersService.findAll(pageNo, pageRows);
   }
 
   @Get(':id')
