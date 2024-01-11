@@ -30,12 +30,19 @@ export class UsersService {
   }
 
   async findAll(pageNo: number, pageRows: number) {
-    return {
-      pageNo: pageNo,
-      pageRows: pageRows,
-      recordTotal: this.users.length,
-      data: this.users,
-    };
+    const offset = pageRows * (pageNo - 1);
+    const newData = JSON.parse(userData).splice(offset, pageRows * pageNo);
+
+    try {
+      return {
+        pageNo: pageNo,
+        pageRows: pageRows,
+        recordTotal: this.users.length,
+        data: newData,
+      };
+    } catch (error) {
+      console.log(`FIND ALL ERROR: ${error}`);
+    }
   }
 
   async findOne(id: number): Promise<User | undefined> {
