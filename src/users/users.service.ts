@@ -49,6 +49,10 @@ export class UsersService {
     return this.users.find((user) => user.userId === id);
   }
 
+  async findOneByUsername(username: string): Promise<User | undefined> {
+    return this.users.find((user) => user.username === username);
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto) {
     try {
       const userIndex = this.users.findIndex((user) => user.userId === id);
