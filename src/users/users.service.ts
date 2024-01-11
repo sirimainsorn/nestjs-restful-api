@@ -59,7 +59,19 @@ export class UsersService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    try {
+      const userIndex = this.users.findIndex((user) => user.userId === id);
+      if (userIndex > -1) {
+        this.users.splice(userIndex, 1);
+        const frameworksData = JSON.stringify(this.users);
+
+        writeFileSync(userPath, frameworksData, 'utf-8');
+
+        return id;
+      }
+    } catch (error) {
+      console.log(`DELETE ERROR: ${error}`);
+    }
   }
 }

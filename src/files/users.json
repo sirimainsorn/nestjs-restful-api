@@ -1,5 +1,4 @@
 [
   { "userId": 1, "username": "john", "passwords": "change me" },
-  { "userId": 2, "username": "maria", "passwords": "guess" },
-  { "username": "string3", "passwords": "string", "userId": 3 }
+  { "userId": 2, "username": "maria", "passwords": "guess" }
 ]
