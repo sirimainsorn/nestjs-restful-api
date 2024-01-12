@@ -7,19 +7,16 @@ import {
   Param,
   Delete,
   Query,
-  UseInterceptors,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
 import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('users')
 @Controller('users')
-@UseInterceptors(TransformInterceptor)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

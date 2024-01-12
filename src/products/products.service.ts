@@ -2,31 +2,42 @@ import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
+import { readFileSync, writeFileSync } from 'fs';
+import { join } from 'path';
 
+var productPath = join(process.cwd(), '/src/files/products.json');
+var productData = readFileSync(productPath).toString();
 @Injectable()
 export class ProductsService {
-  productArray: Product[] = [];
+  products: Product[] = JSON.parse(productData) || [];
 
   create(createProductDto: CreateProductDto) {
-    this.productArray.push({
+    this.products.push({
       ...createProductDto,
-      productId: this.productArray.length + 1,
+      productId: this.products.length + 1,
     });
 
     return { ...createProductDto, productId: 1 };
   }
 
-  findAll(pageNo: number, pageRows: number) {
-    return {
-      pageNo: pageNo,
-      pageRows: pageRows,
-      recordTotal: this.productArray.length,
-      data: this.productArray,
-    };
+  async findAll(pageNo: number, pageRows: number) {
+    const offset = (pageNo - 1) * pageRows;
+    const newData = JSON.parse(productData).splice(offset, pageRows);
+
+    try {
+      return {
+        pageNo: pageNo,
+        pageRows: pageRows,
+        recordTotal: this.products.length,
+        data: newData,
+      };
+    } catch (error) {
+      console.log(`FIND ALL ERROR: ${error}`);
+    }
   }
 
   findOne(id: number) {
-    const findById = this.productArray.find((item) => item.productId === id);
+    const findById = this.products.find((item) => item.productId === id);
 
     return findById;
   }

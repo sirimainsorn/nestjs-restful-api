@@ -31,7 +31,7 @@ export class UsersService {
 
   async findAll(pageNo: number, pageRows: number) {
     const offset = pageRows * (pageNo - 1);
-    const newData = JSON.parse(userData).splice(offset, pageRows * pageNo);
+    const newData = JSON.parse(userData).splice(offset, pageRows);
 
     try {
       return {
