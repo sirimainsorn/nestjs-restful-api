@@ -5,6 +5,9 @@ import { readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { Province } from './entities/province.entity';
 
+var thailandPath = join(process.cwd(), '/src/files/thailand.json');
+var thailandData = readFileSync(thailandPath).toString();
+
 var provincesPath = join(process.cwd(), '/src/files/provinces.json');
 var provincesData = readFileSync(provincesPath).toString();
 
@@ -22,16 +25,18 @@ export class ProvincesService {
 
       return this.provinces;
     } catch (error) {
-      console.log(`CREATE ERROR: ${error}`);
+      console.log(`CREATE: ${error}`);
     }
   }
 
   async findAll() {
-    const newData = JSON.parse(provincesData).map((item) => ({
+    const newData = JSON.parse(provincesData).map((item: any) => ({
       provinceId: item.provinceId,
       provinceTH: item.provinceTH,
       provinceEN: item.provinceEN,
     }));
+
+    console.log(Object.keys(JSON.parse(thailandData)).length);
 
     try {
       return {
@@ -43,8 +48,8 @@ export class ProvincesService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} province`;
+  async findOne(id: number) {
+    return this.provinces.find((province) => province.provinceId === id);
   }
 
   update(id: number, updateProvinceDto: UpdateProvinceDto) {

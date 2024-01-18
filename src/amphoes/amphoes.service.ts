@@ -12,15 +12,25 @@ var amphoesData = readFileSync(amphoesPath).toString();
 export class AmphoesService {
   amphoes: Amphoe[] = JSON.parse(amphoesData) || [];
 
-  create(createAmphoeDto: CreateAmphoeDto) {
-    return 'This action adds a new amphoe';
+  async create(createAmphoeDto: CreateAmphoeDto) {
+    this.amphoes
+      .find((prov: any) => prov.provinceId === createAmphoeDto.provinceId)
+      ['amphoes'].push(createAmphoeDto);
+
+    try {
+      const frameworksData = JSON.stringify(this.amphoes);
+      writeFileSync(amphoesPath, frameworksData, 'utf-8');
+
+      return createAmphoeDto;
+    } catch (error) {
+      console.log(`CREATE: ${error}`);
+    }
   }
 
-  findAll() {
+  async findAll() {
     const newData = JSON.parse(amphoesData).find(
       (province: any) => province.provinceId === 10,
     )['amphoes'];
-    console.log(newData);
 
     try {
       return {
@@ -32,8 +42,12 @@ export class AmphoesService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} amphoe`;
+  async findOne(provinceId: number, amphoesId: number) {
+    console.log(amphoesId);
+
+    return this.amphoes
+      .find((prov: any) => prov.provinceId === provinceId)
+      ['amphoes'].find((amph: any) => amph.amphoesId === amphoesId);
   }
 
   update(id: number, updateAmphoeDto: UpdateAmphoeDto) {

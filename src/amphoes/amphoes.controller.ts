@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { AmphoesService } from './amphoes.service';
 import { CreateAmphoeDto } from './dto/create-amphoe.dto';
@@ -27,9 +28,12 @@ export class AmphoesController {
     return this.amphoesService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.amphoesService.findOne(+id);
+  @Get(':provinceId')
+  findOne(
+    @Param('provinceId') provinceId: string,
+    @Query('amphoesId') amphoesId: string,
+  ) {
+    return this.amphoesService.findOne(+provinceId, parseInt(amphoesId));
   }
 
   @Patch(':id')
