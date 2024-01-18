@@ -24,8 +24,8 @@ export class AmphoesController {
   }
 
   @Get()
-  findAll() {
-    return this.amphoesService.findAll();
+  findAll(@Query('provinceId') provinceId: string) {
+    return this.amphoesService.findAll(parseInt(provinceId));
   }
 
   @Get(':provinceId')

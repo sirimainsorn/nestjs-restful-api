@@ -13,6 +13,8 @@ export class AmphoesService {
   amphoes: Amphoe[] = JSON.parse(amphoesData) || [];
 
   async create(createAmphoeDto: CreateAmphoeDto) {
+    console.log(createAmphoeDto);
+
     this.amphoes
       .find((prov: any) => prov.provinceId === createAmphoeDto.provinceId)
       ['amphoes'].push(createAmphoeDto);
@@ -27,9 +29,9 @@ export class AmphoesService {
     }
   }
 
-  async findAll() {
+  async findAll(provinceId: number) {
     const newData = JSON.parse(amphoesData).find(
-      (province: any) => province.provinceId === 10,
+      (province: any) => province.provinceId === provinceId,
     )['amphoes'];
 
     try {
@@ -43,8 +45,6 @@ export class AmphoesService {
   }
 
   async findOne(provinceId: number, amphoesId: number) {
-    console.log(amphoesId);
-
     return this.amphoes
       .find((prov: any) => prov.provinceId === provinceId)
       ['amphoes'].find((amph: any) => amph.amphoesId === amphoesId);
